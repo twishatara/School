@@ -1,0 +1,115 @@
+In this project you will develop a client and server for a file echo application using UDP. The
+client of the application reads a local file and sends it to the server. The server simply echos back the
+received packets’ application data. The client listens for the echoed packets from the server and saves
+the content of the packets to reassemble a new copy of the original file and stores the output to a new
+file. The packets sent by the client may get re-ordered in transit to the server and back.
+Description
+1. After the server is started, it waits to receive packets from clients. Once a packet arrives, it
+reads the packet and sends the payload back to the client IP address and port number (from
+which it received the packet). The server is, in effect, echoing the payload back to the client.
+The server is started by the following command giving the port number for receiving packets.
+./myserver port number
+2. The client reads a file from disk and sends it to the server over a UDP socket. In order to send
+the file, the client breaks the file up into mtu-byte sized packets.
+The client also reads the echoed packets from the server. It will assemble the received responses
+to re-construct the original file. The client will save the bytes it has received in an output
+file, specified by the command argument out file path. The resulting new output file must be
+identical to the initial read file for correctness and success. In particular, the client must save
+the bytes in the correct original order, even if the packets have been re-ordered in transit to the
+server and back.
+The client can exit successfully, i.e., with exit(0), when the same exact file has been reconstructed
+from the server responses via a UDP socket. If there is no packet loss, the client should be able
+to successfully reconstruct the original packet. However, if there are too many packets send at
+one time by the client, there is a good chance that packets will be dropped by the network or
+the end-hosts.
+If there are any losses, the client should detect it and print an error message “Packet loss
+detected” to stderr, and exit with failure, i.e., exit() with a non-zero value.
+The client is started by the following command.
+./myclient server ip server port mtu in file path out file path
+In your document, describe your mechanism to split the file into packets, and the protocol you
+define to provide ordering of the data to assemble the original data file.
+For example, the following two commands start a server and a client, respectively. Please note
+that the input or output filename arguments may be paths.
+./myserver 9090
+./myclient 10.10.0.1 9090 512 diri/testfile diro/outfile
+Requirements
+• The protocol between the client and server cannot specify or use any transport (TCP or UDP)
+port number. That is, the UDP payload between the client and the server must not carry any
+transport port number.
+
+1
+
+• The client must not send packets with payload data larger than mtu bytes.
+• The client must handle input or output filename arguments that include directory paths.
+• The client must write the final re-assembled file named as given by the command argument
+out file path.
+• The client must not block indefinitely on reading from or writing to any sockets.
+• The client must not hang if the server is down. It must print an error message “Cannot detect
+server” to stderr and exit with failure, if it has not received any packets from the server within
+the default maximum interval of 60 seconds.
+• The client must be robust and not crash if there are any socket API errors. It should exit cleanly.
+A message about the error must be displayed to the stderr.
+• The client must be able to work with input files of any size, up to 1G and including zero.
+• The client must exit with zero, if successful, and non-zero otherwise.
+• The server must handle receiving packets from one or more clients.
+• The server may block to receive packets from clients, and it may be iterative.
+• You are free to output any needed debug messages on stderr.
+• The documentation should describe the method to split the file into packets, and the defined
+protocol to provide ordering of the received echoed data to assemble the original data file.
+What to submit?
+You must submit all files in a single compressed tar file (with tar.gz extension). The tar file name
+should start with your ucsc login id, e.g., loginid-lab2.tar.gz. The submission must follow the
+following steps.
+1. Organize the files into sub-directories (src, bin, and doc)
+2. The source files should be in the src sub-directory.
+3. A Makefile that can be used to build the client program from the required source files. It
+should be in the top directory.
+4. You should not include the compiled program. The Makefile will be used to generate the
+executable program. The make step should put the executable program in the bin sub-directory.
+5. README documentation of your application in plain text or pdf. Do not include any Microsoft
+Word files or other formats. The documentation should list 5 test cases done by you to validate
+the functionality. The documentation should describe how to use your application and the
+internal design, as well as any shortcomings it might have. It should include a list of files in the
+submission with a brief description. This file should be in the doc sub-directory.
+6. Name your submission as above loginid-lab2.tar.gz, where loginid is your CruzID and UCSC
+email username, and lab2 is the name of this assignment. Submit this file.
+
+2
+
+Grading
+The assignment should compile and run on the campus linux timeshare (unix.lt.ucsc.edu). The grading
+will be done on that cluster. Each submission will be tested to make sure it works properly and can
+deal with errors. Grades are allocated using the guidelines below.
+Basic Functionality: 60%
+Dealing with Errors: 20%
+Documentation: 10%
+Style/Code Structure, etc.: 10%
+Note that 20% of the grade will be based on how well your code deals with errors. Good practice
+includes checking all system calls for errors and avoiding unsafe situations such as a buffer overflow.
+The files must be submitted before the due date and time. Please make sure to submit on time.
+Late policy commences immediately after the due date/time. Reminder: Late policy deducts 10% per
+day from your grade.
+The basic functionality is that the received file by the client is identical to the original file the client
+sent to the server. Pay attention to how well your code deals with errors. Good practice includes
+checking all system calls for errors and avoiding unsafe situations such as a buffer overflow.
+The files must be submitted before the due date and time. Please make sure to submit on time.
+Honor Code
+All the code must be developed independently. All the work must be your own. You can re-use code
+that you have written in your own assignments in the class. Also, please do not cut-and-paste code
+blocks off of the Internet. Any violation of the above will result in getting a zero for the test.
+FAQ
+• On what hosts are the lab submissions run and tested? Lab assignments need to compile without
+warnings or errors in the university Unix timeshare computers of unix.lt.ucsc.edu and will be
+tested for functionality there.
+• The mtu represents the maximum size of the UDP payload. If the size given is less than the
+overhead of the sequencing protocol implemented, there should be an error message printed to
+stderr “Required minimum MTU is X + 1”, where X is the size of the added header in bytes
+by your protocol. The client should return a non-zero exit value.
+• What happens if the output file path does not exist? If the file path does not exist then you
+must create it before writing to the output file.
+• Consider using a window of packets for transmission, as opposed to a “stop-and-wait” packet
+exchange. This will allow for better throughput for large files.
+• Consider if the server becomes unreachable in the middle of transferring a file. The client should
+exit with failure in such a case and print “Cannot detect server” to stderr.
+• What should be the maximum sized packet that the server can read and process? For this, let’s
+assume a maximum size of 32k.

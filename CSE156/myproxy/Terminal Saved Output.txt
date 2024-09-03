@@ -1,0 +1,68 @@
+Last login: Thu Feb 29 21:46:16 on ttys000
+twishasharma@Twishas-MacBook-Pro-M1 ~ % cd Desktop/Winter2024/CSE156/lab4Current
+twishasharma@Twishas-MacBook-Pro-M1 lab4Current % ls
+Makefile	doc		myclient	outputfile.txt	servaddr.conf
+bin		infile.txt	myserver	serv_folder	src
+twishasharma@Twishas-MacBook-Pro-M1 lab4Current % make clean
+rm -rf bin/*
+rm -f myclient myserver
+twishasharma@Twishas-MacBook-Pro-M1 lab4Current % make
+gcc -Wall -o bin/myclient src/myclient.c
+gcc -Wall -o bin/myserver src/myserver.c
+ln -sf bin/myclient myclient
+ln -sf bin/myserver myserver
+twishasharma@Twishas-MacBook-Pro-M1 lab4Current % ./myclient 3 servaddr.conf 512 10 /Users/twishasharma/Desktop/Winter2024/CSE156/lab4Current/inputfile.txt /Users/twishasharma/Desktop/Winter2024/CSE156/lab4Current/outputfile.txt
+Current working directory: /Users/twishasharma/Desktop/Winter2024/CSE156/lab4Current
+Opening server config file: servaddr.conf
+Error reading server configurations or insufficient servers
+twishasharma@Twishas-MacBook-Pro-M1 lab4Current % 
+twishasharma@Twishas-MacBook-Pro-M1 lab4Current % 
+twishasharma@Twishas-MacBook-Pro-M1 lab4Current % 
+twishasharma@Twishas-MacBook-Pro-M1 lab4Current % ./myclient 3 servaddr.conf 512 10 /Users/twishasharma/Desktop/Winter2024/CSE156/lab4Current/inputfile.txt /Users/twishasharma/Desktop/Winter2024/CSE156/lab4Current/outputfile.txt
+Current working directory: /Users/twishasharma/Desktop/Winter2024/CSE156/lab4Current
+Opening server config file: servaddr.conf
+Error opening file: No such file or directory
+Failed to create packets from the input file
+twishasharma@Twishas-MacBook-Pro-M1 lab4Current % ls
+Makefile	doc		myclient	outputfile.txt	servaddr.conf
+bin		infile.txt	myserver	serv_folder	src
+twishasharma@Twishas-MacBook-Pro-M1 lab4Current % ls -la servaddr.conf 
+-rw-r--r--@ 1 twishasharma  staff  44 Feb 29 21:52 servaddr.conf
+twishasharma@Twishas-MacBook-Pro-M1 lab4Current % ./myclient 3 servaddr.conf 512 10 /Users/twishasharma/Desktop/Winter2024/CSE156/lab4Current/inputfile.txt /Users/twishasharma/Desktop/Winter2024/CSE156/lab4Current/outputfile.txt
+Current working directory: /Users/twishasharma/Desktop/Winter2024/CSE156/lab4Current
+Opening server config file: servaddr.conf
+Error opening file: No such file or directory
+Failed to create packets from the input file
+twishasharma@Twishas-MacBook-Pro-M1 lab4Current % ./myclient 3 servaddr.conf 512 10 /Users/twishasharma/Desktop/Winter2024/CSE156/lab4Current/inputfile.txt /Users/twishasharma/Desktop/Winter2024/CSE156/lab4Current/outputfile.txt
+Debug: Attempting to open server config file: servaddr.conf
+Debug: Read line: 127.0.0.1 9090
+Debug: Parsed server IP: 127.0.0.1, Port: 9090
+Debug: Read line: 127.0.0.1 9091
+Debug: Parsed server IP: 127.0.0.1, Port: 9091
+Debug: Read line: 127.0.0.1 9092Debug: Parsed server IP: 127.0.0.1, Port: 9092
+Debug: Finished reading server config file. Total servers: 3
+Error opening file: No such file or directory
+Failed to create packets from the input file
+twishasharma@Twishas-MacBook-Pro-M1 lab4Current % 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

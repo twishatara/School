@@ -1,0 +1,43 @@
+1. After the server is started, it waits to receive packets from clients. Once a packet arrives, it
+reads the packet and stores the payload of the packets transmitted by the client to reassemble
+the file and to save locally on the file system.
+The server takes an additional command line argument root folder path for the root directory
+under which the transferred files will be saved. The received file is to be saved under the folder
+root folder path and concatenating the the path name given by the client to the location of the
+root folder. The client path name may contain directory names.
+Multiple server can be started to run at the same time on the same or different end hosts. Each
+server is started by the following command giving the port number port number for receiving
+packets. Also, it takes a percentage value droppc, between 0 and 100, to drop packets, either
+data or acknowledgment. Then, droppc could be used for debugging your reliability functionality.
+Zero means no drops, and 100 means every packet is dropped. The last argument is as given
+above.
+./myserver port number droppc root folder path
+2. The client reads a file from disk and sends it to each server over a UDP socket. In order to send
+the file, the client breaks the file up into mtu-byte sized packets. The client must be concurrent
+in sending packets to all of the servers using threads.
+
+The client expects the file to be saved by the servers correctly and reliably. The client commu-
+nicates to the servers the path name for saving the output bytes. This path name is specified
+
+by the command argument out file path. The resulting new output file (on the server) must be
+identical to the initial read file for correctness and success. In particular, the bytes in the file
+must be correct, even if the packets have been re-ordered in transit to a server.
+The client must exit successfully, i.e., with exit(0), when the file has been fully and reliably
+acknowledged by all of the servers. Remember that both packet loss and re-ordering may occur
+in-transit.
+If there are packet losses, the client must re-transmit each lost packet at least three times but
+no more than ten times before giving up and exiting with failure. If there are any losses, the
+client must detect and print an error message “Packet loss detected” to stderr, whenever it
+re-transmits a packet. If it has reached the limit of re-transmitting the same packet ten times, it
+must print an error message “Reached max re-transmission limit” to stderr and exit with failure
+only if all of the servers are down. Thus, as long at least one server is up, the client should
+continue to send reliably to that one server to the finish transfer.
+The client sends at most winsz many packets in transit that are yet to be acknowledged. There
+
+are various reliable transfer protocols that work with a window of packets, e.g., “Go-Back-
+N” or “Selective Repeat.” Each time the client sends out a DATA packet, it must print to
+
+stdout the sequence number pktsn of the current DATA packet being sent. it must print the
+acknowledgement numbers as they are received. The line must include details of the state of
+the window being used to control the data transfer. These must be formatted as described in
+the requirements section below.

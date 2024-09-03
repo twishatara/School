@@ -1,0 +1,16 @@
+## Programing Assignment 1: Lexographic Ordering
+
+## Short Description
+        In this assignment, the goal was to build a Integer List abstract data tyoe, and use it to indirectley alphabetize the lines in a file. The main() is held in the Lex.c file, and the List.c file will hold the supporting functions for operations.
+
+## Build
+        To build the main program manually, type "clang -Wall -Wextra -Werror -Wpedantic -o Lex Lex.c”
+
+## Errors
+        No known errors/issues with the program
+
+## Credit
+        Please not that I have refrenced Professor Tantalo's example programs for Queue.c and Queue.h, as well as File.io. Additionally, I had high level psuedocode, verbal collaboration with my sister Krisha Sharma (krvsharm).
+
+## Cleaning
+        make clean
